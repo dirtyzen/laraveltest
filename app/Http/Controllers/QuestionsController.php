@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -64,23 +70,29 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param Question $question
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Question $question)
     {
+        $this->authorize("update", $question);
         return view('questions.edit', compact('question'));
     }
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  AskQuestionRequest  $request
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param AskQuestionRequest $request
+     * @param Question $question
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
+        $this->authorize("update", $question);
+
         $question->update($request->only('title', 'body'));
 
         return redirect()->route('questions.index')->with('success', 'Your questions has been updated.');
@@ -91,10 +103,12 @@ class QuestionsController extends Controller
      *
      * @param Question $question
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Question $question)
     {
+        $this->authorize("delete", $question);
+
         $question->delete();
 
         return redirect()->route('questions.index')->with('success', 'Your question has ben deleted.');
