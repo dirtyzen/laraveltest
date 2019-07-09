@@ -8,7 +8,7 @@
 
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h2>Create Questions</h2>
+                            <h2>Edit Questions</h2>
                             <div class="ml-auto">
                                 <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back</a>
                             </div>
@@ -17,9 +17,11 @@
 
                     <div class="card-body">
 
-                        <form action="{{ route('questions.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('questions.update', $question->id) }}" method="post" enctype="multipart/form-data">
 
-                            @include("questions._form", ["buttonText" => "Send"])
+                            {{ method_field('PUT') }}
+
+                            @include("questions._form", ["buttonText" => "Send For Update"])
 
                         </form>
 
