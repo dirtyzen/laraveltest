@@ -87,11 +87,14 @@ class QuestionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @param Question $question
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+
+        return redirect()->route('questions.index')->with('success', 'Your question has ben deleted.');
     }
 }
