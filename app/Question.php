@@ -19,7 +19,6 @@ class Question extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
-
     }
 
 }
