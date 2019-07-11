@@ -47,7 +47,17 @@ class Question extends Model
 
     public function getBodyHtmlAttribute()
     {
-        return \Parsedown::instance()->setBreaksEnabled(true)->setMarkupEscaped(true)->text($this->body);
+        return $this->bodyHtml();
+    }
+
+    public function getExcerptAttribute()
+    {
+        return Str::limit($this->bodyHtml(), 300);
+    }
+
+    private function bodyHtml()
+    {
+        return \Parsedown::instance()->setBreaksEnabled(true)->setMarkupEscaped(true)->text(strip_tags($this->body));
     }
 
     public function answers()
