@@ -23,13 +23,33 @@
 
                             <div class="d-flex flex-column vote-controls">
 
-                                <a title="Vote Up" class="vote-up">
+                                <a
+                                        title="Vote Up"
+                                        class="vote-up {{ Auth::guest() ? 'off' : '' }}"
+                                        onclick="event.preventDefault(); document.getElementById('up-vote-question-{{ $question->id }}').submit();"
+                                >
                                     <i class="fas fa-caret-up fa-3x"></i>
                                 </a>
-                                <span class="vote-count">123</span>
-                                <a title="Vote Down" class="vote-down off">
+
+                                <form id="up-vote-question-{{ $question->id }}" action="/questions/{{ $question->id }}/vote" method="post" class="d-none">
+                                    @csrf
+                                    <input type="hidden" name="vote" value="1">
+                                </form>
+
+                                <span class="vote-count">{{ $question->votes_count }}</span>
+
+                                <a
+                                        title="Vote Down"
+                                        class="vote-down {{ Auth::guest() ? 'off' : '' }}"
+                                        onclick="event.preventDefault(); document.getElementById('down-vote-question-{{ $question->id }}').submit();"
+                                >
                                     <i class="fas fa-caret-down fa-3x"></i>
                                 </a>
+
+                                <form id="down-vote-question-{{ $question->id }}" action="/questions/{{ $question->id }}/vote" method="post" class="d-none">
+                                    @csrf
+                                    <input type="hidden" name="vote" value="-1">
+                                </form>
 
                                 <a
                                         title="Favorite"
