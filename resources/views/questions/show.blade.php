@@ -54,7 +54,9 @@
         ])
 
         {{-- getting answer form field --}}
-        @include("answers._create")
+        @if(Auth::user())
+            @include("answers._create")
+        @endif
 
     </div>
 @endsection

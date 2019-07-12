@@ -20,7 +20,7 @@
                         {{-- getting message field --}}
                         @include("layouts._messages")
 
-                        @foreach($questions as $question)
+                        @forelse($questions as $question)
 
                             <div class="media">
 
@@ -82,7 +82,11 @@
 
                             <hr>
 
-                        @endforeach
+                        @empty
+                            <div class="alert alert-warning">
+                                <b>Sorry!</b> There is no any questions.
+                            </div>
+                        @endforelse
 
                         <div class="mx-auto">
                             {{ $questions->links() }}
