@@ -11,7 +11,7 @@ class Answer extends Model
 
     protected $fillable = ['body', 'user_id'];
 
-    protected $appends = ['created_date'];
+    protected $appends = ['body_html', 'created_date'];
 
     public function question()
     {
