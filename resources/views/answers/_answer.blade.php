@@ -30,10 +30,18 @@
             <div class="col-4"></div>
 
             <div class="col-4">
+
+                {{-- blade (php,html) version
                 @include("shared._author", [
                     'model' => $answer,
                     'label' => 'Answered'
                 ])
+                --}}
+
+
+                {{-- vue component version --}}
+                <user-info v-bind:model="{{ $answer }}" label="Answered"></user-info>
+
             </div>
 
         </div>
