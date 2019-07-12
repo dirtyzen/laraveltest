@@ -23,7 +23,7 @@ class Answer extends Model
 
     public function getBodyHtmlAttribute()
     {
-        return \Parsedown::instance()->setBreaksEnabled(true)->setMarkupEscaped(true)->text($this->body);
+        return clean(\Parsedown::instance()->setBreaksEnabled(true)->setMarkupEscaped(true)->text(strip_tags($this->body)));
     }
 
     public static function boot()
