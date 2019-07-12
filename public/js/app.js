@@ -10799,8 +10799,40 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editing: false,
       body: this.answer.body,
-      bodyHtml: this.answer.body_html
+      bodyHtml: this.answer.body_html,
+      beforeEditCache: null,
+      id: this.answer.id,
+      questionId: this.answer.question_id
     };
+  },
+  methods: {
+    edit: function edit() {
+      this.beforeEditCache = this.body;
+      this.editing = true;
+    },
+    cancel: function cancel() {
+      this.body = this.beforeEditCache;
+      this.editing = false;
+    },
+    update: function update() {
+      var _this = this;
+
+      axios.patch("/questions/".concat(this.questionId, "/answers/").concat(this.id), {
+        body: this.body
+      }).then(function (res) {
+        //console.log(res);
+        _this.bodyHtml = res.data.body_html;
+        _this.editing = false;
+        alert(res.data.message);
+      })["catch"](function (err) {
+        alert(err.response.data.message);
+      });
+    }
+  },
+  computed: {
+    isInvalid: function isInvalid() {
+      return this.body.length < 10;
+    }
   }
 });
 
@@ -58481,13 +58513,14 @@ if (token) {
 /*!********************************************!*\
   !*** ./resources/js/components/Answer.vue ***!
   \********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Answer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Answer.vue?vue&type=script&lang=js& */ "./resources/js/components/Answer.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Answer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Answer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 var render, staticRenderFns
 
 
@@ -58517,7 +58550,7 @@ component.options.__file = "resources/js/components/Answer.vue"
 /*!*********************************************************************!*\
   !*** ./resources/js/components/Answer.vue?vue&type=script&lang=js& ***!
   \*********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58705,8 +58738,8 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["dom"].watch();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\xampp\htdocs\laraveltest\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\xampp\htdocs\laraveltest\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laraveltest\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laraveltest\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

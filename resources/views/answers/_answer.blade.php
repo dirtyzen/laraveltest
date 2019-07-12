@@ -9,13 +9,12 @@
 
             <form v-if="editing" @submit.prevent="update">
 
-
                 <div class="form-group">
-                    <textarea class="form-control" rows="10" v-model="body"></textarea>
+                    <textarea class="form-control" rows="10" v-model="body" required></textarea>
                 </div>
 
-                <button type="button" @click="editing = false">Update</button>
-                <button type="button" @click="editing = false">Cancel</button>
+                <button type="submit" class="btn btn-primary" :disabled="isInvalid">Update</button>
+                <button type="button" class="btn btn-outline-secondary" @click="cancel">Cancel</button>
 
             </form>
 
@@ -30,7 +29,7 @@
                 <div class="col-4">
 
                     @can('update', $answer)
-                        <a @click.prevent="editing = true" class="btn btn-sm btn-outline-info">Edit</a>
+                        <a @click.prevent="edit" class="btn btn-sm btn-outline-info">Edit</a>
                         {{--<a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" class="btn btn-sm btn-outline-info">Edit</a>--}}
                     @endcan
 

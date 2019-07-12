@@ -10734,3 +10734,7 @@ form.form-delete {
   padding-bottom: 0;
 }
 
+[v-cloak] {
+  display: none;
+}
+
