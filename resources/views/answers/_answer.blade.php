@@ -34,6 +34,12 @@
                     @endcan
 
                     @can('delete', $answer)
+
+                        <button type="button" @click="destroy" class="btn btn-sm btn-outline-danger">
+                            Delete
+                        </button>
+
+                        {{-- blade (html-php) version
                         <form class="form-delete" action="{{ route('questions.answers.destroy', [$question->id, $answer->id]) }}" method="post" enctype="multipart/form-data">
                             @method('DELETE')
                             @csrf
@@ -41,6 +47,7 @@
                                 Delete
                             </button>
                         </form>
+                        --}}
                     @endcan
 
                 </div>
