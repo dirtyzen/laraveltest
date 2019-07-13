@@ -58,9 +58,16 @@
         --}}
 
     @elseif($model instanceof App\Answer)
+
+        {{-- vue component version --}}
+        <accepted :answer="{{ $model }}"></accepted>
+
+        {{-- blade (php,html) version
         @include("shared._accept", [
             'model' => $model
         ])
+        --}}
+
     @endif
 
 </div>
