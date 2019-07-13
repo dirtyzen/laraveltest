@@ -47,9 +47,16 @@
     </form>
 
     @if($model instanceof App\Question)
+
+        {{-- vue component version --}}
+        <favorite :question="{{ $model }}"></favorite>
+
+        {{-- blade (php,html) version
         @include("shared._favorite", [
             'model' => $model
         ])
+        --}}
+
     @elseif($model instanceof App\Answer)
         @include("shared._accept", [
             'model' => $model
