@@ -27,7 +27,7 @@
             classes(){
                 return [
                     'favorite', 'mt-2',
-                    ! this.isSignedIn ? 'off' : (this.isFavorited ? 'favorited' : '')
+                    ! this.signedIn ? 'off' : (this.isFavorited ? 'favorited' : '')
                 ];
             },
 
@@ -35,16 +35,12 @@
                 return `/questions/${this.id}/favorites`;
             },
 
-            isSignedIn(){
-                return window.Auth.signedIn;
-            },
-
         },
 
         methods : {
 
             toggle(){
-                if(! this.isSignedIn){
+                if(! this.signedIn){
                     this.$toast.warning('You must login!', 'Warning', {
                         timeout: 2500,
                         position: 'topLeft'
