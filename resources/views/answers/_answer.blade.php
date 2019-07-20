@@ -1,9 +1,14 @@
 <answer v-bind:answer="{{ $answer }}" inline-template>
     <div class="media post">
 
+        {{-- vue component version --}}
+        <vote :model="{{ $answer }}" name="answer"></vote>
+
+        {{-- blade (php,html) version
         @include("shared._votes", [
             'model' => $answer
         ])
+        --}}
 
         <div class="media-body">
 

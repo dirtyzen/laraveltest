@@ -21,9 +21,14 @@
 
                         <div class="media">
 
+                            {{-- vue component version --}}
+                            <vote :model="{{ $question }}" name="question"></vote>
+
+                            {{-- blade (php,html) version
                             @include("shared._votes", [
                                 'model' => $question
                             ])
+                            --}}
 
                             <div class="media-body">
                                 {!! $question->body_html !!}
