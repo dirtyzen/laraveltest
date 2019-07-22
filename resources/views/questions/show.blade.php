@@ -72,10 +72,11 @@
         <answers :question="{{ $question }}"></answers>
 
 
-        {{-- getting answer form field --}}
+        {{-- getting answer form field
         @if(Auth::user())
             @include("answers._create")
         @endif
+        --}}
 
     </div>
 @endsection
