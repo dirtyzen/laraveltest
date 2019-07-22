@@ -69,7 +69,7 @@
         --}}
 
         {{-- vue component version --}}
-        <answers :answers="{{ $question->answers }}" :count="{{ $question->answers_count }}"></answers>
+        <answers :question="{{ $question }}"></answers>
 
 
         {{-- getting answer form field --}}
