@@ -59,11 +59,18 @@
             </div>
         </div>
 
-        {{-- getting answers field --}}
+        {{--
+        blade (php,html) version
+        getting answers field
         @include("answers._index", [
             'answersCount' => $question->answers_count,
             'answers' => $question->answers
         ])
+        --}}
+
+        {{-- vue component version --}}
+        <answers :answers="{{ $question->answers }}" :count="{{ $question->answers_count }}"></answers>
+
 
         {{-- getting answer form field --}}
         @if(Auth::user())
