@@ -81,10 +81,13 @@
 
     import Vote from './Vote';
     import UserInfo from './UserInfo';
+    import modification from '../mixins/modification'
 
     export default {
 
         props : ['question'],
+
+        mixins : [modification],
 
         components : {
             Vote,
@@ -93,11 +96,10 @@
 
         data(){
             return {
-                title : this.question.title,
+                id : this.question.id,
                 body : this.question.body,
                 bodyHtml : this.question.body_html,
-                editing : false,
-                id : this.question.id,
+                title : this.question.title,
                 beforeEditCache : {},
             }
         },
@@ -116,72 +118,39 @@
 
         methods : {
 
-            update(){
-
-                axios.put(this.endpoint, {
+            payload(){
+                return {
                     body : this.body,
                     title : this.title
-                }).catch(({ response }) => {
-                    this.$toast.error(response.data.message, 'Error', { timeout: 3000 });
-                }).then(({ data }) => {
-                    this.bodyHtml = data.body_html;
-                    this.$toast.success(data.message, 'Success', { timeout: 3000 });
-                    this.editing = false;
-                });
-
+                }
             },
 
-            destroy() {
-                this.$toast.question('Are you sure about that?', 'Confirm', {
-                    timeout: 5000,
-                    close: false,
-                    overlay: true,
-                    toastOnce: true,
-                    id: 'question',
-                    zindex: 999,
-                    position: 'center',
-                    buttons: [
+            delete(){
+                axios.delete(this.endpoint)
+                    .then(({data}) => {
 
-                        ['<button><b>YES</b></button>', (instance, toast) => {
-                            axios.delete(this.endpoint)
-                                .then(({data}) => {
+                        this.$toast.success(data.message, 'Success', {timeout: 2500});
 
-                                    this.$toast.success(data.message, 'Success', {timeout: 2500});
+                        setTimeout(() => {
+                            window.location.href = "/questions";
+                        }, 3500);
 
-                                    setTimeout(() => {
-                                        window.location.href = "/questions";
-                                    }, 3500);
-
-                                })
-                                .catch(({ response }) => {
-                                    this.$toast.error(response.data.message, 'Error', {timeout: 2500});
-                                });
-
-
-                            instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
-                        }, true],
-
-                        ['<button>NO</button>', function (instance, toast) {
-                            instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
-                        }]
-
-                    ]
-                });
+                    })
+                    .catch(({ response }) => {
+                        this.$toast.error(response.data.message, 'Error', {timeout: 2500});
+                    });
             },
 
-            edit(){
+            setEditCache(){
                 this.beforeEditCache = {
                     body : this.body,
                     title : this.title
                 };
-
-                this.editing = true;
             },
 
-            cancel(){
+            restoreFromCache(){
                 this.body = this.beforeEditCache.body;
                 this.title = this.beforeEditCache.title;
-                this.editing = false;
             },
 
         },
