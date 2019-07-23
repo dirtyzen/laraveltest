@@ -54,7 +54,7 @@
 
                                     <a v-if="authorize('modify', question)" @click.prevent="edit" class="btn btn-sm btn-outline-info">Edit</a>
 
-                                    <button v-if="authorize('modify', question)" type="button" @click="destroy" class="btn btn-sm btn-outline-danger">
+                                    <button v-if="authorize('deleteQuestion', question)" type="button" @click="destroy" class="btn btn-sm btn-outline-danger">
                                         Delete
                                     </button>
 
@@ -78,32 +78,111 @@
 </template>
 
 <script>
+
+    import Vote from './Vote';
+    import UserInfo from './UserInfo';
+
     export default {
 
         props : ['question'],
+
+        components : {
+            Vote,
+            UserInfo
+        },
 
         data(){
             return {
                 title : this.question.title,
                 body : this.question.body,
                 bodyHtml : this.question.body_html,
-                editing : false
+                editing : false,
+                id : this.question.id,
+                beforeEditCache : {},
             }
+        },
+
+        computed : {
+
+            isInvalid(){
+                return this.body.length < 10 || this.title.length < 10;
+            },
+
+            endpoint(){
+                return `/questions/${this.id}`;
+            },
+
         },
 
         methods : {
 
             update(){
-                alert('test');
+
+                axios.put(this.endpoint, {
+                    body : this.body,
+                    title : this.title
+                }).catch(({ response }) => {
+                    this.$toast.error(response.data.message, 'Error', { timeout: 3000 });
+                }).then(({ data }) => {
+                    this.bodyHtml = data.body_html;
+                    this.$toast.success(data.message, 'Success', { timeout: 3000 });
+                    this.editing = false;
+                });
+
+            },
+
+            destroy() {
+                this.$toast.question('Are you sure about that?', 'Confirm', {
+                    timeout: 5000,
+                    close: false,
+                    overlay: true,
+                    toastOnce: true,
+                    id: 'question',
+                    zindex: 999,
+                    position: 'center',
+                    buttons: [
+
+                        ['<button><b>YES</b></button>', (instance, toast) => {
+                            axios.delete(this.endpoint)
+                                .then(({data}) => {
+
+                                    this.$toast.success(data.message, 'Success', {timeout: 2500});
+
+                                    setTimeout(() => {
+                                        window.location.href = "/questions";
+                                    }, 3500);
+
+                                })
+                                .catch(({ response }) => {
+                                    this.$toast.error(response.data.message, 'Error', {timeout: 2500});
+                                });
+
+
+                            instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
+                        }, true],
+
+                        ['<button>NO</button>', function (instance, toast) {
+                            instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
+                        }]
+
+                    ]
+                });
             },
 
             edit(){
+                this.beforeEditCache = {
+                    body : this.body,
+                    title : this.title
+                };
+
                 this.editing = true;
             },
 
             cancel(){
+                this.body = this.beforeEditCache.body;
+                this.title = this.beforeEditCache.title;
                 this.editing = false;
-            }
+            },
 
         },
 
